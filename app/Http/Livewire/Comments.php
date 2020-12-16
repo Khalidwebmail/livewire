@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Comment;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -24,7 +25,8 @@ class Comments extends Component
      */
     public function addComment()
     {
-        if($this->newComment == ""){
+        if($this->newComment == "")
+        {
             return;
         }
         array_unshift($this->comments, [
@@ -33,6 +35,12 @@ class Comments extends Component
             'creator' => 'Noor Hossain'
         ]);
         $this->newComment = "";
+    }
+
+    public function mount()
+    {
+        $initialComments = Comment::all();
+        $this->comments = $initialComments;
     }
 
     public function render()
