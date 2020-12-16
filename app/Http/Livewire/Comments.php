@@ -10,13 +10,7 @@ class Comments extends Component
 {
     public $newComment;
 
-    public $comments = [
-        [
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui porro animi molestias minus ad sunt velit ipsa, iure earum vitae veritatis, culpa nihil molestiae et repellendus! Dolore dicta eius voluptates!',
-            'created_at' => '3 min ago',
-            'creator' => 'Khalid Ahmed'
-        ]
-    ];
+    public $comments;
 
     /**
      * addComment
@@ -29,17 +23,21 @@ class Comments extends Component
         {
             return;
         }
-        array_unshift($this->comments, [
-            'body' => $this->newComment,
-            'created_at' => Carbon::now()->diffForHumans(),
-            'creator' => 'Noor Hossain'
+
+        $createdComment = Comment::create([
+            'body'=>$this->newComment,
+            'user_id'=> 1
         ]);
+
+        // $this->comments->push($createdComment);
+
+        $this->comments->prepend($createdComment);
         $this->newComment = "";
     }
 
     public function mount()
     {
-        $initialComments = Comment::all();
+        $initialComments = Comment::latest()->get();
         $this->comments = $initialComments;
     }
 
